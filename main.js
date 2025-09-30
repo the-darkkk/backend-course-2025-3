@@ -21,4 +21,29 @@ if (!fs.existsSync(options.input)) {
   process.exit(1);
 }
 
+const rawData = fs.readFileSync(options.input, 'utf-8');
+const passengers = rawData
+  .split('\n')
+  .filter(line => line.trim() !== '')
+  .map(line => JSON.parse(line));
 
+let result = passengers;
+if (options.survived) {
+  result = result.filter(p => p.Survived === '1' || p.Survived === 1);
+}
+
+const formatted = result.map(p => {
+  if (options.age) {
+    return `${p.Name} ${p.Age} ${p.Ticket}`;
+  } else {
+    return `${p.Name} ${p.Ticket}`;
+  }
+}).join('\n');
+
+if (options.display) {
+  console.log(formatted);
+}
+
+if (options.output) {
+  fs.writeFileSync(options.output, formatted, 'utf-8');
+}

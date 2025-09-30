@@ -29,7 +29,7 @@ const passengers = rawData
 
 let result = passengers;
 if (options.survived) {
-  result = result.filter(p => p.Survived === '1' || p.Survived === 1);
+  result = result.filter(p => p.Survived === '1');
 }
 
 const formatted = result.map(p => {
